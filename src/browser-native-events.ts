@@ -61,7 +61,7 @@ export function useBrowserNativeTransitions() {
 
   if (transition && currentPathname.current !== pathname) {
     // Whenever the pathname changes, we block the rendering of the new route
-    // until the view transition is complete.
+    // until the view transition is started (i.e. DOM screenshotted).
     use(transition[0])
   }
 
@@ -77,6 +77,7 @@ export function useBrowserNativeTransitions() {
     currentPathname.current = pathname
     if (transitionRef.current) {
       transitionRef.current[1]()
+      transitionRef.current = null
     }
   }, [pathname])
 }
