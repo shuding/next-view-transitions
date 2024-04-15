@@ -133,18 +133,27 @@ footer {
   margin-top: 0;
 }
 
-.support:before {
-  content: '️You do not have support for view transitions.';
+.support span {
   padding: 4px 6px;
-  color: rgba(200, 0, 0, 1);
-  background-color: rgba(200, 0, 0, 0.1);
   border-radius: 8px;
 }
 
+.support .no {
+  color: rgba(200, 0, 0, 1);
+  background-color: rgba(200, 0, 0, 0.1);
+}
+
+.support .yes {
+  display: none;
+  color: rgb(0, 120, 0);
+  background-color: rgba(0, 120, 0, 0.1);
+}
+
 @supports (view-transition-name: figure-caption) {
-  .support:before {
-    content: '️You have support for view transitions.';
-    color: rgb(0, 120, 0);
-    background-color: rgba(0, 120, 0, 0.1);
+  .support .yes {
+    display: inline;
+  }
+  .support .no {
+    display: none;
   }
 }
