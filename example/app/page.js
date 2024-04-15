@@ -12,7 +12,7 @@ export default function Page() {
       <h2>Installation</h2>
       <p>
         Use your favorite package manager to install the{' '}
-        <code>next-view-transitions</code> package. For example:
+        <code>next-view-transitions</code> package:
       </p>
       <p>
         <code>pnpm install next-view-transitions</code>
@@ -58,7 +58,7 @@ export default function Component() {
 }`}
         </code>
       </pre>
-      <p>That's it!</p>
+      <p>That’s it!</p>
     </div>
   )
 }

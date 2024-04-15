@@ -7,7 +7,7 @@ export default function Page() {
         This is the <span className='demo'>Demo</span>
       </h2>
       <p>OK you just saw the demo :)</p>
-      <Link href='/'>Go back →</Link>
+      <Link href='/'>Open homepage →</Link>
     </div>
   )
 }
