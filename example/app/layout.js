@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
               href='https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API'
               target='_blank'
             >
-              CSS View Transitions API
+              View Transitions API
             </a>{' '}
             in Next.js App Router.{' '}
             <a

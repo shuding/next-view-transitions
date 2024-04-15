@@ -1,8 +1,12 @@
 # next-view-transitions
 
-Use [CSS View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API) in Next.js App Router.
+Use [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API) in Next.js App Router.
 
 [**Demo**](https://next-view-transitions.vercel.app).
+
+## Disclaimer
+
+This library is aimed at basic use cases of View Transitions and Next.js App Router. With more complex applications and use cases like concurrent rendering, Suspense and streaming, new primitives and APIs still need to be developed into the core of React and Next.js in the future ([more](https://twitter.com/shuding_/status/1779583281920344448)).
 
 ## Installation
 

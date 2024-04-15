@@ -69,6 +69,8 @@ h2 {
 p,
 pre {
   margin-bottom: 0.75rem;
+  width: 600px;
+  max-width: 100%;
 }
 
 a {

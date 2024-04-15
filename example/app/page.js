@@ -9,6 +9,20 @@ export default function Page() {
       <p>
         <Link href='/demo'>Go to /demo →</Link>
       </p>
+      <h2>Disclaimer</h2>
+      <p>
+        This library is aimed at basic use cases of View Transitions and Next.js
+        App Router. With more complex applications and use cases like concurrent
+        rendering, Suspense and streaming, new primitives and APIs still need to
+        be developed into the core of React and Next.js in the future (
+        <a
+          href='https://twitter.com/shuding_/status/1779583281920344448'
+          target='_blank'
+        >
+          more
+        </a>
+        ).
+      </p>
       <h2>Installation</h2>
       <p>
         Use your favorite package manager to install the{' '}
