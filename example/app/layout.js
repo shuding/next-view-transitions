@@ -32,6 +32,7 @@ export default function RootLayout({ children }) {
               Source Code ↗
             </a>
           </p>
+          <p className="support"/>
           <p></p>
           <div>{children}</div>
           <footer>
