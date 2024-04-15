@@ -32,6 +32,10 @@ export default function RootLayout({ children }) {
               Source Code ↗
             </a>
           </p>
+          <p className="support">
+            <span className="no">️🔴 You do not have support for view transitions.</span>
+            <span className="yes">️🟢 You have support for view transitions.</span>
+          </p>
           <p></p>
           <div>{children}</div>
           <footer>

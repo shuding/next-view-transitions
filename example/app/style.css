@@ -4,6 +4,7 @@
 *::after {
   box-sizing: border-box;
 }
+
 * {
   margin: 0;
 }
@@ -42,9 +43,9 @@ h6 {
 /** Styles */
 body {
   font-family: var(--font-geist-sans), system-ui, -apple-system,
-    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
-    Noto Color Emoji;
+  BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+  sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+  Noto Color Emoji;
   font-feature-settings: 'liga', 'clig', 'calt';
   font-variant: common-ligatures contextual;
   letter-spacing: -0.01em;
@@ -132,4 +133,29 @@ footer {
 
 .demo-box h2:first-child {
   margin-top: 0;
+}
+
+.support span {
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+
+.support .no {
+  color: rgba(200, 0, 0, 1);
+  background-color: rgba(200, 0, 0, 0.1);
+}
+
+.support .yes {
+  display: none;
+  color: rgb(0, 120, 0);
+  background-color: rgba(0, 120, 0, 0.1);
+}
+
+@supports (view-transition-name: figure-caption) {
+  .support .yes {
+    display: inline;
+  }
+  .support .no {
+    display: none;
+  }
 }
