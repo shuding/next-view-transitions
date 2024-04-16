@@ -48,11 +48,11 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
         props.onClick(e)
       }
 
-      if (shouldPreserveDefault(e)) {
-        return
-      }
-
       if ('startViewTransition' in document) {
+        if (shouldPreserveDefault(e)) {
+          return
+        }
+
         e.preventDefault()
 
         // @ts-ignore
