@@ -41,6 +41,7 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
   const router = useRouter()
   const finishViewTransition = useSetFinishViewTransition()
 
+  const { href, as, replace, scroll } = props
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (shouldPreserveDefault(e)) {
@@ -55,7 +56,6 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
 
       // extended from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L221-L235
       // removed the need for pages router support
-      const { href, as, replace, scroll } = props
       const navigate = () => {
         router[replace ? 'replace' : 'push'](as || href, {
           scroll: scroll ?? true,
@@ -79,7 +79,7 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
 
       startTransition(navigate)
     },
-    [props.href, props.onClick]
+    [props.onClick, href, as, replace, scroll]
   )
 
   return <NextLink {...props} onClick={onClick} />
