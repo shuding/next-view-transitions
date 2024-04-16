@@ -44,40 +44,31 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
   const { href, as, replace, scroll } = props
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (shouldPreserveDefault(e)) {
-        return
-      }
-
       if (props.onClick) {
         props.onClick(e)
       }
 
-      e.preventDefault()
-
-      // extended from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L221-L235
-      // removed the need for pages router support
-      const navigate = () => {
-        router[replace ? 'replace' : 'push'](as || href, {
-          scroll: scroll ?? true,
-        })
+      if (shouldPreserveDefault(e)) {
+        return
       }
 
       if ('startViewTransition' in document) {
+        e.preventDefault()
+
         // @ts-ignore
         document.startViewTransition(
           () =>
             new Promise<void>((resolve) => {
               startTransition(() => {
-                navigate()
+                // copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L231-L233
+                router[replace ? 'replace' : 'push'](as || href, {
+                  scroll: scroll ?? true,
+                })
                 finishViewTransition(() => resolve)
               })
             })
         )
-
-        return
       }
-
-      startTransition(navigate)
     },
     [props.onClick, href, as, replace, scroll]
   )
