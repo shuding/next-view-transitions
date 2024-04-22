@@ -1,5 +1,6 @@
-import { useEffect, useRef, useSyncExternalStore, use } from 'react'
+
 import { usePathname } from 'next/navigation'
+import { useEffect, useRef, use, useSyncExternalStore } from 'react'
 
 // TODO: This implementation might not be complete when there are nested
 // Suspense boundaries during a route transition. But it should work fine for
@@ -9,11 +10,11 @@ import { usePathname } from 'next/navigation'
 let currentViewTransition:
   | null
   | [
-      // Promise to wait for the view transition to start
-      Promise<void>,
-      // Resolver to finish the view transition
-      () => void
-    ] = null
+    // Promise to wait for the view transition to start
+    Promise<void>,
+    // Resolver to finish the view transition
+    () => void
+  ] = null
 
 export function useBrowserNativeTransitions() {
   const pathname = usePathname()
@@ -22,7 +23,7 @@ export function useBrowserNativeTransitions() {
   const transition = useSyncExternalStore(
     (callback: () => void) => {
       if (!('startViewTransition' in document)) {
-        return () => {}
+        return () => { }
       }
 
       const onPopState = () => {
@@ -53,6 +54,7 @@ export function useBrowserNativeTransitions() {
         // TODO: Intentionally not cleaning up the event listener, otherwise the
         // listener won't be registered again. This might be something related
         // to the `use` call. We should investigate this further.
+        window.removeEventListener('popstate', onPopState);
       }
     },
     () => currentViewTransition,
