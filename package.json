@@ -1,6 +1,6 @@
 {
     "name": "@qamarq/next-view-transitions",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "module",
     "description": "View Transitions API for Next.js App Router",
     "main": "./dist/index.js",
