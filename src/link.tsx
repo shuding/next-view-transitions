@@ -1,5 +1,5 @@
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter } from './use-router'
 import { startTransition, useCallback } from 'react'
 import { useSetFinishViewTransition } from './transition-context'
 
@@ -55,19 +55,8 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
 
         e.preventDefault()
 
-        // @ts-ignore
-        document.startViewTransition(
-          () =>
-            new Promise<void>((resolve) => {
-              startTransition(() => {
-                // copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L231-L233
-                router[replace ? 'replace' : 'push'](as || href, {
-                  scroll: scroll ?? true,
-                })
-                finishViewTransition(() => resolve)
-              })
-            })
-        )
+        const navigate = replace ? router.replace : router.push
+        navigate(as || href, { scroll: scroll ?? true })
       }
     },
     [props.onClick, href, as, replace, scroll]

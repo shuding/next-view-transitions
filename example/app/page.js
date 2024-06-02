@@ -1,17 +1,28 @@
-import { Link } from 'next-view-transitions'
+'use client'
+
+import { Link, useRouter } from 'next-view-transitions'
 
 export default function Page() {
+  const router = useRouter();
+
+  const routerNavigate = () => {
+    router.push('/demo');
+  }
+
   return (
     <div>
       <h2>
         <span className='demo'>Demo</span>
       </h2>
-      <p>
-        <Link href='/demo'>Go to /demo →</Link>
-      </p>
-      <h2>Disclaimer</h2>
-      <p>
-        This library is aimed at basic use cases of View Transitions and Next.js
+        <p>
+            <Link href='/demo'>Go to /demo →</Link>
+        </p>
+        <p>
+            <a onClick={routerNavigate}>Go to /demo with router.push →</a>
+        </p>
+        <h2>Disclaimer</h2>
+        <p>
+            This library is aimed at basic use cases of View Transitions and Next.js
         App Router. With more complex applications and use cases like concurrent
         rendering, Suspense and streaming, new primitives and APIs still need to
         be developed into the core of React and Next.js in the future (
