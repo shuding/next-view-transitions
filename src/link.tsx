@@ -1,7 +1,6 @@
 import NextLink from 'next/link'
-import { useRouter } from './use-router'
-import { startTransition, useCallback } from 'react'
-import { useSetFinishViewTransition } from './transition-context'
+import { useTransitionRouter } from './use-transition-router'
+import { useCallback } from 'react'
 
 // copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L180-L191
 function isModifiedEvent(event: React.MouseEvent): boolean {
@@ -38,8 +37,7 @@ function shouldPreserveDefault(
 // to navigate, and trigger a view transition.
 
 export function Link(props: React.ComponentProps<typeof NextLink>) {
-  const router = useRouter()
-  const finishViewTransition = useSetFinishViewTransition()
+  const router = useTransitionRouter()
 
   const { href, as, replace, scroll } = props
   const onClick = useCallback(
