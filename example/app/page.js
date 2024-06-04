@@ -1,17 +1,38 @@
-import { Link } from 'next-view-transitions'
+'use client'
+
+import { Link, useTransitionRouter } from 'next-view-transitions'
+import { useState } from "react";
 
 export default function Page() {
+  const [withCustomTransition, setWithCustomTransition] = useState(false)
+  const router = useTransitionRouter();
+
+  const routerNavigate = () => {
+    router.push('/demo', {
+        onTransitionReady: withCustomTransition ? slideInOut: undefined,
+    });
+  }
+
   return (
     <div>
       <h2>
         <span className='demo'>Demo</span>
       </h2>
-      <p>
-        <Link href='/demo'>Go to /demo →</Link>
-      </p>
-      <h2>Disclaimer</h2>
-      <p>
-        This library is aimed at basic use cases of View Transitions and Next.js
+        <p>
+            <Link href='/demo'>Go to /demo →</Link>
+        </p>
+        <p>
+            <a onClick={routerNavigate}>Go to /demo with router.push →</a>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" onChange={() => setWithCustomTransition((prev) => !prev)}/>{' '}
+                custom transition
+            </label>
+        </p>
+        <h2>Disclaimer</h2>
+        <p>
+            This library is aimed at basic use cases of View Transitions and Next.js
         App Router. With more complex applications and use cases like concurrent
         rendering, Suspense and streaming, new primitives and APIs still need to
         be developed into the core of React and Next.js in the future (
@@ -76,3 +97,44 @@ export default function Component() {
     </div>
   )
 }
+
+function slideInOut() {
+    document.documentElement.animate(
+        [
+            {
+                opacity: 1,
+                transform: 'translate(0, 0)',
+            },
+            {
+                opacity: 0,
+                transform: 'translate(-100%, 0)',
+            },
+        ],
+        {
+            duration: 500,
+            easing: 'ease-in-out',
+            fill: 'forwards',
+            pseudoElement: '::view-transition-old(root)',
+        }
+    );
+
+    document.documentElement.animate(
+        [
+            {
+                opacity: 0,
+                transform: 'translate(100%, 0)',
+            },
+            {
+                opacity: 1,
+                transform: 'translate(0, 0)',
+            },
+        ],
+        {
+            duration: 500,
+            easing: 'ease-in-out',
+            fill: 'forwards',
+            pseudoElement: '::view-transition-new(root)',
+        }
+    );
+}
+
