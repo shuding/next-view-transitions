@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react'
-import { createContext, use, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import { useBrowserNativeTransitions } from './browser-native-events'
 
@@ -33,5 +33,5 @@ export function ViewTransitions({
 }
 
 export function useSetFinishViewTransition() {
-  return use(ViewTransitionsContext)
+  return useContext(ViewTransitionsContext)
 }
