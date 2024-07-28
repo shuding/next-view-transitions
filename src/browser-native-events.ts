@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, use } from 'react'
 import { usePathname } from 'next/navigation'
 
 // TODO: This implementation might not be complete when there are nested
@@ -52,14 +52,11 @@ export function useBrowserNativeTransitions() {
     }
   }, [])
 
-  useEffect(() => {
-    if (currentViewTransition && currentPathname.current !== pathname) {
-      // Wait for the view transition to start before rendering the new route
-      currentViewTransition[0].then(() => {
-        currentPathname.current = pathname
-      })
-    }
-  }, [currentViewTransition, pathname])
+  if (currentViewTransition && currentPathname.current !== pathname) {
+    // Whenever the pathname changes, we block the rendering of the new route
+    // until the view transition is started (i.e. DOM screenshotted).
+    use(currentViewTransition[0])
+  }
 
   // Keep the transition reference up-to-date.
   const transitionRef = useRef(currentViewTransition)
@@ -70,6 +67,7 @@ export function useBrowserNativeTransitions() {
   useEffect(() => {
     // When the new route component is actually mounted, we finish the view
     // transition.
+    currentPathname.current = pathname
     if (transitionRef.current) {
       transitionRef.current[1]()
       transitionRef.current = null
