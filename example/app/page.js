@@ -14,7 +14,7 @@ export default function Page() {
         <Link href='/demo'>Go to /demo →</Link>
       </p>
       <p>
-        <button
+        <a
           onClick={(e) => {
             e.preventDefault()
             router.push('/demo', {
@@ -22,9 +22,10 @@ export default function Page() {
               onTransitionReady: slideInOut,
             })
           }}
+          href='/demo'
         >
           Go to /demo with custom transition →
-        </button>
+        </a>
       </p>
       <h2>Disclaimer</h2>
       <p>
@@ -117,9 +118,6 @@ export default function Component() {
 }
 
 function slideInOut() {
-  if(!document.documentElement.animate) {
-    return
-  }
   document.documentElement.animate(
     [
       {
