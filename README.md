@@ -50,6 +50,25 @@ export default function Component() {
 }
 ```
 
+Or use the `useTransitionRouter` hook for programmatic navigation:
+
+```jsx
+import { useTransitionRouter } from 'next-view-transitions'
+
+export default function Component() {
+  const router = useTransitionRouter()
+
+  return (
+    <div>
+      <button onClick={() => {
+        // All Next.js router methods are supported
+        router.push('/about')
+      }}>Go to /about</button>
+    </div>
+  )
+}
+```
+
 That's it!
 
 ## License
