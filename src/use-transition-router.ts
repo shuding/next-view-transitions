@@ -22,6 +22,7 @@ export function useTransitionRouter() {
   const finishViewTransition = useSetFinishViewTransition()
 
   const triggerTransition = useCallback((cb: () => void, { onTransitionReady }: TransitionOptions = {}) => {
+    if ('startViewTransition' in document) {
     // @ts-ignore
     const transition = document.startViewTransition(
       () =>
@@ -35,6 +36,9 @@ export function useTransitionRouter() {
 
     if (onTransitionReady) {
       transition.ready.then(onTransitionReady);
+    }
+  } else{
+      return cb()
     }
   }, [])
 
