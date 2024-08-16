@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, use } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 // TODO: This implementation might not be complete when there are nested
 // Suspense boundaries during a route transition. But it should work fine for
@@ -64,6 +64,8 @@ export function useBrowserNativeTransitions() {
     transitionRef.current = currentViewTransition
   }, [currentViewTransition])
 
+  const search = useSearchParams()
+
   useEffect(() => {
     // When the new route component is actually mounted, we finish the view
     // transition.
@@ -72,5 +74,5 @@ export function useBrowserNativeTransitions() {
       transitionRef.current[1]()
       transitionRef.current = null
     }
-  }, [pathname])
+  }, [pathname, search])
 }
