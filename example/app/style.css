@@ -136,6 +136,11 @@ footer {
   margin-top: 0;
 }
 
+.demo-link-box {
+  display: flex;
+  justify-content: space-between;
+}
+
 .support span {
   font-size: small;
   padding: 4px 6px;

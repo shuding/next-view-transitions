@@ -27,6 +27,9 @@ export default function Page() {
           Go to /demo with custom transition →
         </a>
       </p>
+      <p>
+        <Link href='/demo?query=test'>Go to /demo with query parameters →</Link>
+      </p>
       <h2>Disclaimer</h2>
       <p>
         This library is aimed at basic use cases of View Transitions and Next.js
