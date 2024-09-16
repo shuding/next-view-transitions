@@ -7,7 +7,23 @@ export default function Page() {
 
   return (
     <div>
-      <h2>
+      <nav>
+        <ul>
+          <li>
+            <Link href='#demo'>Demo</Link>
+          </li>
+          <li>
+            <Link href='#disclaimer'>Disclaimer</Link>
+          </li>
+          <li>
+            <Link href='#installation'>Installation</Link>
+          </li>
+          <li>
+            <Link href='#usage'>Usage</Link>
+          </li>
+        </ul>
+      </nav>
+      <h2 id='demo'>
         <span className='demo'>Demo</span>
       </h2>
       <p>
@@ -27,7 +43,7 @@ export default function Page() {
           Go to /demo with custom transition →
         </a>
       </p>
-      <h2>Disclaimer</h2>
+      <h2 id='disclaimer'>Disclaimer</h2>
       <p>
         This library is aimed at basic use cases of View Transitions and Next.js
         App Router. With more complex applications and use cases like concurrent
@@ -41,7 +57,7 @@ export default function Page() {
         </a>
         ).
       </p>
-      <h2>Installation</h2>
+      <h2 id='installation'>Installation</h2>
       <p>
         Use your favorite package manager to install the{' '}
         <code>next-view-transitions</code> package:
@@ -49,7 +65,7 @@ export default function Page() {
       <p>
         <code>pnpm install next-view-transitions</code>
       </p>
-      <h2>Usage</h2>
+      <h2 id='usage'>Usage</h2>
       <p>
         Wrap your content with the <code>&lt;ViewTransitions&gt;</code>{' '}
         component inside the layout file:
