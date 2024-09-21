@@ -23,23 +23,24 @@ export function useTransitionRouter() {
 
   const triggerTransition = useCallback((cb: () => void, { onTransitionReady }: TransitionOptions = {}) => {
     if ('startViewTransition' in document) {
-    // @ts-ignore
-    const transition = document.startViewTransition(
-      () =>
-        new Promise<void>((resolve) => {
-          startTransition(() => {
-            cb();
-            finishViewTransition(() => resolve)
+      // @ts-ignore
+      const transition = document.startViewTransition(
+        () =>
+          new Promise<void>((resolve) => {
+            startTransition(() => {
+              cb();
+              finishViewTransition(() => resolve)
+            })
           })
-        })
-    )
+      )
 
-    if (onTransitionReady) {
-      transition.ready.then(onTransitionReady);
+        if (onTransitionReady) {
+          transition.ready.then(onTransitionReady);
+        }
     }
-  } else{
-      return cb()
-    }
+     else {
+        return cb()
+      }
   }, [])
 
   const push = useCallback((
