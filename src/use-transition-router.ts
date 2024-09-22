@@ -22,20 +22,25 @@ export function useTransitionRouter() {
   const finishViewTransition = useSetFinishViewTransition()
 
   const triggerTransition = useCallback((cb: () => void, { onTransitionReady }: TransitionOptions = {}) => {
-    // @ts-ignore
-    const transition = document.startViewTransition(
-      () =>
-        new Promise<void>((resolve) => {
-          startTransition(() => {
-            cb();
-            finishViewTransition(() => resolve)
+    if ('startViewTransition' in document) {
+      // @ts-ignore
+      const transition = document.startViewTransition(
+        () =>
+          new Promise<void>((resolve) => {
+            startTransition(() => {
+              cb();
+              finishViewTransition(() => resolve)
+            })
           })
-        })
-    )
+      )
 
-    if (onTransitionReady) {
-      transition.ready.then(onTransitionReady);
+        if (onTransitionReady) {
+          transition.ready.then(onTransitionReady);
+        }
     }
+     else {
+        return cb()
+      }
   }, [])
 
   const push = useCallback((
