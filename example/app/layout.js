@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
             </span>
           </p>
           <p></p>
-          <div>{children}</div>
+          <div className='container'>{children}</div>
           <footer>
             <p>
               Created by{' '}

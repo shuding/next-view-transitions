@@ -119,6 +119,14 @@ footer {
   max-width: 100%;
 }
 
+ul {
+  padding-left: 1rem;
+}
+
+li {
+  list-style: '•  ';
+}
+
 .demo {
   view-transition-name: demo-title;
   width: fit-content;
@@ -134,6 +142,10 @@ footer {
 
 .demo-box h2:first-child {
   margin-top: 0;
+}
+
+.container {
+  view-transition-name: container-move;
 }
 
 .support span {
