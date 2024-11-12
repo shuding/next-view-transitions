@@ -1,44 +1,44 @@
 {
-  "name": "next-view-transitions",
-  "version": "0.3.2",
-  "type": "module",
-  "description": "View Transitions API for Next.js App Router",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "exports": "./dist/index.js",
-  "scripts": {
-    "build": "bunchee",
-    "dev": "bunchee --watch"
-  },
-  "keywords": [
-    "next",
-    "next.js",
-    "view transitions",
-    "route transitions",
-    "app router"
-  ],
-  "author": {
-    "name": "Shu Ding",
-    "email": "g@shud.in",
-    "url": "https://shud.in"
-  },
-  "homepage": "https://next-view-transitions.vercel.app",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/react": "^18.2.78",
-    "bunchee": "^5.1.2",
-    "next": "^14.2.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.4.5"
-  },
+	"name": "next-view-transitions",
+	"version": "0.3.2",
+	"type": "module",
+	"description": "View Transitions API for Next.js App Router",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"exports": "./dist/index.js",
+	"scripts": {
+		"build": "bunchee",
+		"dev": "bunchee --watch"
+	},
+	"keywords": [
+		"next",
+		"next.js",
+		"view transitions",
+		"route transitions",
+		"app router"
+	],
+	"author": {
+		"name": "Shu Ding",
+		"email": "g@shud.in",
+		"url": "https://shud.in"
+	},
+	"homepage": "https://next-view-transitions.vercel.app",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/react": "^18.2.78",
+		"bunchee": "^5.1.2",
+		"next": "^14.2.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"typescript": "^5.4.5"
+	},
 	"peerDependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "packageManager": "pnpm@9.1.2"
+		"next": ">=14.0.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	},
+	"packageManager": "pnpm@9.1.2"
 }
