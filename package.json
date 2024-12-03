@@ -1,6 +1,6 @@
 {
   "name": "next-view-transitions",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "type": "module",
   "description": "View Transitions API for Next.js App Router",
   "main": "./dist/index.js",
