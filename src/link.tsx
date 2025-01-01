@@ -46,6 +46,10 @@ export function Link(props: React.ComponentProps<typeof NextLink>) {
         props.onClick(e)
       }
 
+      if (e.defaultPrevented) {
+        return
+      }
+
       if ('startViewTransition' in document) {
         if (shouldPreserveDefault(e)) {
           return
