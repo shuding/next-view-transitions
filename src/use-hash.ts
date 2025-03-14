@@ -1,14 +1,6 @@
 import { useSyncExternalStore } from 'react'
 
-/**
- * Hook to subscribe to URL hash changes
- * 
- * This hook provides a reactive way to access the current URL hash,
- * automatically re-rendering components when the hash changes.
- * 
- * @returns The current URL hash string
- */
-export function useHash(): string {
+export function useHash() {
   return useSyncExternalStore(
     subscribeHash,
     getHashSnapshot,
@@ -16,31 +8,15 @@ export function useHash(): string {
   )
 }
 
-/**
- * Get the current hash value from the browser
- * 
- * @returns The current URL hash string
- */
-function getHashSnapshot(): string {
+function getHashSnapshot() {
   return window.location.hash
 }
 
-/**
- * Provide a default hash value for server-side rendering
- * 
- * @returns Empty string as hash is not available on the server
- */
-function getServerHashSnapshot(): string {
+function getServerHashSnapshot() {
   return ''
 }
 
-/**
- * Subscribe to hash change events
- * 
- * @param onStoreChange - Callback function to execute when hash changes
- * @returns Cleanup function to remove the event listener
- */
-function subscribeHash(onStoreChange: () => void): () => void {
+function subscribeHash(onStoreChange: () => void) {
   window.addEventListener('hashchange', onStoreChange)
   return () => window.removeEventListener('hashchange', onStoreChange)
 }

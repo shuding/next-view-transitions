@@ -2,12 +2,7 @@ import NextLink from 'next/link'
 import { useTransitionRouter } from './use-transition-router'
 import { useCallback } from 'react'
 
-/**
- * Determines if a click event was modified (e.g., with meta key or ctrl key)
- * 
- * @param event - The mouse event to check
- * @returns Whether the event was modified
- */
+// copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L180-L191
 function isModifiedEvent(event: React.MouseEvent): boolean {
   const eventTarget = event.currentTarget as HTMLAnchorElement | SVGAElement
   const target = eventTarget.getAttribute('target')
@@ -21,55 +16,49 @@ function isModifiedEvent(event: React.MouseEvent): boolean {
   )
 }
 
-/**
- * Determines if the browser's default behavior should be preserved for a click event
- * 
- * @param e - The mouse event to check
- * @returns Whether the default behavior should be preserved
- */
-function shouldPreserveDefault(e: React.MouseEvent<HTMLAnchorElement>): boolean {
+// copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L204-L217
+function shouldPreserveDefault(
+  e: React.MouseEvent<HTMLAnchorElement>
+): boolean {
   const { nodeName } = e.currentTarget
 
   // anchors inside an svg have a lowercase nodeName
   const isAnchorNodeName = nodeName.toUpperCase() === 'A'
 
-  return isAnchorNodeName && isModifiedEvent(e)
+  if (isAnchorNodeName && isModifiedEvent(e)) {
+    // ignore click for browser’s default behavior
+    return true
+  }
+
+  return false
 }
 
-/**
- * Extended Link component that supports view transitions
- * 
- * This component wraps Next.js Link and adds support for the View Transitions API
- * when navigating between pages.
- */
+// This is a wrapper around next/link that explicitly uses the router APIs
+// to navigate, and trigger a view transition.
+
 export function Link(props: React.ComponentProps<typeof NextLink>) {
   const router = useTransitionRouter()
-  const { href, as, replace, scroll, onClick: userOnClick, ...restProps } = props
 
+  const { href, as, replace, scroll } = props
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
-      // Call the user's onClick handler if provided
-      if (userOnClick) {
-        userOnClick(e)
+      if (props.onClick) {
+        props.onClick(e)
       }
 
-      // Only use view transitions if the browser supports it
       if ('startViewTransition' in document) {
-        // Don't override default behavior for modified clicks
         if (shouldPreserveDefault(e)) {
           return
         }
 
-        // Prevent default behavior to handle navigation ourselves
         e.preventDefault()
 
-        // Use the appropriate navigation method based on the replace prop
         const navigate = replace ? router.replace : router.push
         navigate(as || href, { scroll: scroll ?? true })
       }
     },
-    [userOnClick, href, as, replace, scroll, router]
+    [props.onClick, href, as, replace, scroll]
   )
 
-  return <NextLink {...restProps} href={href} as={as} replace={replace} scroll={scroll} onClick={onClick} />
+  return <NextLink {...props} onClick={onClick} />
 }
