@@ -10,7 +10,9 @@ import { TransitionHrefContext } from './contexts'
 export function useBrowserNativeTransitions() {
   const pathname = usePathname()
   const currentPathname = useRef(pathname)
-  const { setTransitioningHref } = useContext(TransitionHrefContext)
+  const { setTransitioningHref, setPreviousPath, previousPath } = useContext(TransitionHrefContext)
+  const previousPathRef = useRef(previousPath)
+
   
    // This is a global state to keep track of the view transition state.
   const [currentViewTransition, setCurrentViewTransition] = useState<
@@ -22,7 +24,11 @@ export function useBrowserNativeTransitions() {
       () => void
     ]
   >(null)
-  
+
+  useEffect(() => {
+    previousPathRef.current = previousPath
+  }, [previousPath])
+
   useEffect(() => {
     if (!('startViewTransition' in document)) {
       return () => {}
@@ -30,6 +36,14 @@ export function useBrowserNativeTransitions() {
     
     const onPopState = () => {
       const newHref = window.location.pathname + window.location.hash
+
+      const currentPreviousPath = previousPathRef.current
+
+      if (currentPreviousPath !== newHref && currentPreviousPath) {
+        setCurrentViewTransition(null)
+
+        return;
+      }
       
       setTransitioningHref(newHref)
       
@@ -43,6 +57,7 @@ export function useBrowserNativeTransitions() {
         // @ts-ignore
         document.startViewTransition(() => {
           resolve()
+          setPreviousPath(currentPathname.current)
           return pendingViewTransition
         })
       })
@@ -57,7 +72,7 @@ export function useBrowserNativeTransitions() {
     return () => {
       window.removeEventListener('popstate', onPopState)
     }
-  }, [setTransitioningHref])
+  }, [setTransitioningHref, setPreviousPath])
   
   if (currentViewTransition && currentPathname.current !== pathname) {
     // Whenever the pathname changes, we block the rendering of the new route
@@ -72,7 +87,7 @@ export function useBrowserNativeTransitions() {
   }, [currentViewTransition])
 
   const hash = useHash()
-  
+
   useEffect(() => {
     // When the new route component is actually mounted, we finish the view
     // transition.

@@ -1,3 +1,5 @@
+'use client'
+
 import { use, useContext, useEffect, useState } from 'react'
 import { useBrowserNativeTransitions } from './browser-native-events'
 import { ViewTransitionsContext, TransitionHrefContext } from './contexts'
@@ -12,6 +14,7 @@ export function ViewTransitions({ children }: Readonly<{
 }>) {
   const [finishViewTransition, setFinishViewTransition] = useState<null | (() => void)>(null)
   const [transitioningHref, setTransitioningHref] = useState<string | null>(null)
+  const [previousPath, setPreviousPath] = useState<string | null>(null)
 
   useEffect(() => {
     if (!finishViewTransition) return
@@ -19,10 +22,14 @@ export function ViewTransitions({ children }: Readonly<{
     setFinishViewTransition(null)
   }, [finishViewTransition])
 
-
   return (
     <ViewTransitionsContext.Provider value={setFinishViewTransition}>
-      <TransitionHrefContext.Provider value={{ transitioningHref, setTransitioningHref }}>
+      <TransitionHrefContext.Provider value={{ 
+        transitioningHref, 
+        setTransitioningHref,
+        previousPath,
+        setPreviousPath
+      }}>
         <BrowserNativeTransitions>
           {children}
         </BrowserNativeTransitions>

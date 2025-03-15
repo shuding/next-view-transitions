@@ -1,3 +1,4 @@
+// use-transition-router.ts
 import { useRouter as useNextRouter } from 'next/navigation'
 import { startTransition, useCallback, useContext, useMemo } from "react"
 import { TransitionHrefContext } from "./contexts"
@@ -6,7 +7,6 @@ import {
   NavigateOptions
 } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { useSetFinishViewTransition } from './transition-context'
-
 
 export type TransitionOptions = {
   onTransitionReady?: () => void
@@ -22,14 +22,16 @@ export type TransitionRouter = AppRouterInstance & {
 export function useTransitionRouter(): TransitionRouter {
   const router = useNextRouter()
   const finishViewTransition = useSetFinishViewTransition()
-  const { setTransitioningHref } = useContext(TransitionHrefContext)
+  const { setTransitioningHref, setPreviousPath } = useContext(TransitionHrefContext)
 
   const triggerTransition = useCallback((
     href: string, 
     cb: () => void, 
     { onTransitionReady }: TransitionOptions = {}
   ) => {
+    const currentPath = window.location.pathname
     setTransitioningHref(href)
+    setPreviousPath(currentPath)
 
     if ('startViewTransition' in document) {
       // @ts-ignore
@@ -53,9 +55,8 @@ export function useTransitionRouter(): TransitionRouter {
       setTransitioningHref(null)
       return cb()
     }
-  }, [setTransitioningHref, finishViewTransition])
+  }, [setTransitioningHref, setPreviousPath, finishViewTransition])
 
- 
   const push = useCallback(
     (href: string, { onTransitionReady, ...options }: NavigateOptionsWithTransition = {}) => {
       triggerTransition(href, () => router.push(href, options), { onTransitionReady })
