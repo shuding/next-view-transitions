@@ -22,7 +22,7 @@ export type TransitionRouter = AppRouterInstance & {
 export function useTransitionRouter(): TransitionRouter {
   const router = useNextRouter();
   const finishViewTransition = useSetFinishViewTransition();
-  const { setTransitioningHref, addPreviousPath } = useContext(TransitionHrefContext);
+  const { setTransitioningHref, setPreviousPath } = useContext(TransitionHrefContext);
 
   const triggerTransition = useCallback((
     href: string, 
@@ -31,7 +31,7 @@ export function useTransitionRouter(): TransitionRouter {
   ) => {
     const currentPath = window.location.pathname;
     setTransitioningHref(href);
-    addPreviousPath(currentPath);
+    setPreviousPath(currentPath);
 
     if ('startViewTransition' in document) {
       // @ts-ignore
@@ -55,7 +55,7 @@ export function useTransitionRouter(): TransitionRouter {
       setTransitioningHref(null);
       return cb();
     }
-  }, [setTransitioningHref, addPreviousPath, finishViewTransition]);
+  }, [setTransitioningHref, setPreviousPath, finishViewTransition]);
 
   const push = useCallback(
     (href: string, { onTransitionReady, ...options }: NavigateOptionsWithTransition = {}) => {

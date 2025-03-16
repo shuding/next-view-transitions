@@ -10,8 +10,8 @@ import { TransitionHrefContext } from './contexts'
 export function useBrowserNativeTransitions() {
   const pathname = usePathname();
   const currentPathname = useRef(pathname);
-  const { setTransitioningHref, previousPaths, addPreviousPath, clearPreviousPath } = useContext(TransitionHrefContext);
-  const previousPathsRef = useRef(previousPaths);
+  const { setTransitioningHref, setPreviousPath, previousPath } = useContext(TransitionHrefContext)
+  const previousPathRef = useRef(previousPath)
 
   // This is a global state to keep track of the view transition state.
   const [currentViewTransition, setCurrentViewTransition] = useState<
@@ -25,8 +25,8 @@ export function useBrowserNativeTransitions() {
   >(null);
 
   useEffect(() => {
-    previousPathsRef.current = previousPaths;
-  }, [previousPaths]);
+    previousPathRef.current = previousPath
+  }, [previousPath])
 
   useEffect(() => {
     if (!('startViewTransition' in document)) {
@@ -36,11 +36,11 @@ export function useBrowserNativeTransitions() {
     const onPopState = () => {
       const newHref = window.location.pathname + window.location.hash;
       
-      // Check if the new URL is in our previous paths
-      const matchingPath = previousPathsRef.current.find(item => item.path === newHref);
-      
-      if (!matchingPath) {
-        setCurrentViewTransition(null);
+      const currentPreviousPath = previousPathRef.current
+
+      if (currentPreviousPath !== newHref && currentPreviousPath) {
+        setCurrentViewTransition(null)
+
         return;
       }
       
@@ -56,7 +56,7 @@ export function useBrowserNativeTransitions() {
         // @ts-ignore
         document.startViewTransition(() => {
           resolve();
-          addPreviousPath(currentPathname.current);
+          setPreviousPath(currentPathname.current)
           return pendingViewTransition;
         });
       });
@@ -65,9 +65,6 @@ export function useBrowserNativeTransitions() {
         pendingStartViewTransition,
         pendingViewTransitionResolve!,
       ]);
-      
-      // Clear this path from our previous paths as we've used it
-      clearPreviousPath(newHref);
     };
     
     window.addEventListener('popstate', onPopState);
@@ -75,7 +72,7 @@ export function useBrowserNativeTransitions() {
     return () => {
       window.removeEventListener('popstate', onPopState);
     };
-  }, [setTransitioningHref, addPreviousPath, clearPreviousPath]);
+  }, [setTransitioningHref, setPreviousPath]);
   
   if (currentViewTransition && currentPathname.current !== pathname) {
     // Whenever the pathname changes, we block the rendering of the new route

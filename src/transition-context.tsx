@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useCallback, useContext, useEffect, useState } from 'react'
+import { use, useContext, useEffect, useState } from 'react'
 import { useBrowserNativeTransitions } from './browser-native-events'
 import { ViewTransitionsContext, TransitionHrefContext } from './contexts'
 
@@ -12,15 +12,7 @@ function BrowserNativeTransitions({ children }: Readonly<{ children: React.React
 export function ViewTransitions({ children }: Readonly<{ children: React.ReactNode }>) {
   const [finishViewTransition, setFinishViewTransition] = useState<null | (() => void)>(null);
   const [transitioningHref, setTransitioningHref] = useState<string | null>(null);
-  const [previousPaths, setPreviousPaths] = useState<{ path: string, timestamp: number }[]>([]);
-
-  const addPreviousPath = useCallback((path: string) => {
-    setPreviousPaths(prev => [...prev, { path, timestamp: Date.now() }]);
-  }, []);
-
-  const clearPreviousPath = useCallback((path: string) => {
-    setPreviousPaths(prev => prev.filter(item => item.path !== path));
-  }, []);
+  const [previousPath, setPreviousPath] = useState<string | null>(null)
 
   useEffect(() => {
     if (!finishViewTransition) return;
@@ -31,11 +23,10 @@ export function ViewTransitions({ children }: Readonly<{ children: React.ReactNo
   return (
     <ViewTransitionsContext.Provider value={setFinishViewTransition}>
       <TransitionHrefContext.Provider value={{
-        transitioningHref,
-        setTransitioningHref,
-        previousPaths,
-        addPreviousPath,
-        clearPreviousPath
+         transitioningHref, 
+         setTransitioningHref,
+         previousPath,
+         setPreviousPath
       }}>
         <BrowserNativeTransitions>
           {children}
@@ -82,12 +73,8 @@ type TransitionOptions = {
 export function useTransitionState(
   hrefOrOptions: string | RegExp | TransitionOptions
 ): boolean {
-  const { transitioningHref, previousPaths } = useContext(TransitionHrefContext);
+  const { transitioningHref, previousPath } = useContext(TransitionHrefContext);
   
-  // Get the most recent path (if any)
-  const mostRecentPath = previousPaths.length > 0 
-    ? previousPaths.sort((a, b) => b.timestamp - a.timestamp)[0].path 
-    : null;
 
   const checkHrefMatch = (target: string | null, matcher: string | RegExp): boolean => {
     if (!target) return false;
@@ -108,7 +95,7 @@ export function useTransitionState(
   const hasTo = toHref !== undefined;
 
   const fromMatches = hasFrom
-    ? checkHrefMatch(mostRecentPath, fromHref)
+    ? checkHrefMatch(previousPath, fromHref)
     : true;
 
   const toMatches = hasTo
@@ -119,6 +106,6 @@ export function useTransitionState(
     (!hasFrom || fromMatches) && 
     (!hasTo || toMatches) && 
     (transitioningHref !== null || !hasTo) &&
-    (mostRecentPath !== null || !hasFrom)
+    (previousPath !== null || !hasFrom)
   );
 }
