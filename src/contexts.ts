@@ -2,10 +2,11 @@ import { createContext } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 
 export interface TransitionHrefContextValue {
-  transitioningHref: string | null
-  previousPath: string | null
-  setTransitioningHref: (href: string | null) => void
-  setPreviousPath: (path: string | null) => void
+  transitioningHref: string | null;
+  previousPaths: { path: string, timestamp: number }[];
+  setTransitioningHref: (href: string | null) => void;
+  addPreviousPath: (path: string) => void;
+  clearPreviousPath: (path: string) => void;
 }
 
 export const ViewTransitionsContext = createContext<
@@ -14,7 +15,8 @@ export const ViewTransitionsContext = createContext<
 
 export const TransitionHrefContext = createContext<TransitionHrefContextValue>({
   transitioningHref: null,
-  previousPath: null,
+  previousPaths: [],
   setTransitioningHref: () => {},
-  setPreviousPath: () => {}
+  addPreviousPath: () => {},
+  clearPreviousPath: () => {}
 })

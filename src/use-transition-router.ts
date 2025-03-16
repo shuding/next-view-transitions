@@ -20,42 +20,42 @@ export type TransitionRouter = AppRouterInstance & {
 }
 
 export function useTransitionRouter(): TransitionRouter {
-  const router = useNextRouter()
-  const finishViewTransition = useSetFinishViewTransition()
-  const { setTransitioningHref, setPreviousPath } = useContext(TransitionHrefContext)
+  const router = useNextRouter();
+  const finishViewTransition = useSetFinishViewTransition();
+  const { setTransitioningHref, addPreviousPath } = useContext(TransitionHrefContext);
 
   const triggerTransition = useCallback((
     href: string, 
     cb: () => void, 
     { onTransitionReady }: TransitionOptions = {}
   ) => {
-    const currentPath = window.location.pathname
-    setTransitioningHref(href)
-    setPreviousPath(currentPath)
+    const currentPath = window.location.pathname;
+    setTransitioningHref(href);
+    addPreviousPath(currentPath);
 
     if ('startViewTransition' in document) {
       // @ts-ignore
       const transition = document.startViewTransition(() => 
         new Promise<void>((resolve) => {
           startTransition(() => {
-            cb()
-            finishViewTransition(() => resolve)
-          })
+            cb();
+            finishViewTransition(() => resolve);
+          });
         })
-      )
+      );
 
       transition.finished.finally(() => {
-        setTransitioningHref(null)
-      })
+        setTransitioningHref(null);
+      });
 
       if (onTransitionReady) {
-        transition.ready.then(onTransitionReady)
+        transition.ready.then(onTransitionReady);
       }
     } else {
-      setTransitioningHref(null)
-      return cb()
+      setTransitioningHref(null);
+      return cb();
     }
-  }, [setTransitioningHref, setPreviousPath, finishViewTransition])
+  }, [setTransitioningHref, addPreviousPath, finishViewTransition]);
 
   const push = useCallback(
     (href: string, { onTransitionReady, ...options }: NavigateOptionsWithTransition = {}) => {
