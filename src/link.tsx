@@ -1,6 +1,6 @@
 import NextLink from 'next/link'
 import { useTransitionRouter } from './use-transition-router'
-import { useCallback } from 'react'
+import * as React from 'react'
 
 // copied from https://github.com/vercel/next.js/blob/66f8ffaa7a834f6591a12517618dce1fd69784f6/packages/next/src/client/link.tsx#L180-L191
 function isModifiedEvent(event: React.MouseEvent): boolean {
@@ -36,29 +36,38 @@ function shouldPreserveDefault(
 // This is a wrapper around next/link that explicitly uses the router APIs
 // to navigate, and trigger a view transition.
 
-export function Link(props: React.ComponentProps<typeof NextLink>) {
-  const router = useTransitionRouter()
+const Link = React.forwardRef<
+  HTMLAnchorElement,
+  React.ComponentProps<typeof NextLink>
+>((props, ref) => {
+  const router = useTransitionRouter();
 
-  const { href, as, replace, scroll } = props
-  const onClick = useCallback(
+  const { href, as, replace, scroll } = props;
+  const onClick = React.useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!href && !as) {
+        return;
+      }
       if (props.onClick) {
-        props.onClick(e)
+        props.onClick(e);
       }
 
-      if ('startViewTransition' in document) {
+      if ("startViewTransition" in document) {
         if (shouldPreserveDefault(e)) {
-          return
+          return;
         }
 
-        e.preventDefault()
+        e.preventDefault();
 
-        const navigate = replace ? router.replace : router.push
-        navigate(as || href, { scroll: scroll ?? true })
+        const navigate = replace ? router.replace : router.push;
+        navigate((as ?? href).toString(), { scroll: scroll ?? true });
       }
     },
-    [props.onClick, href, as, replace, scroll]
-  )
+    [props.onClick, href, as, replace, scroll],
+  );
 
-  return <NextLink {...props} onClick={onClick} />
-}
+  return <NextLink {...props} onClick={onClick} ref={ref} />;
+});
+Link.displayName = "Link";
+
+export { Link };
