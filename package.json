@@ -11,7 +11,8 @@
   "exports": "./dist/index.js",
   "scripts": {
     "build": "bunchee",
-    "dev": "bunchee --watch"
+    "dev": "bunchee --watch",
+    "prepare": "npm run build"
   },
   "keywords": [
     "next",
