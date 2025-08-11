@@ -12,7 +12,7 @@
   "scripts": {
     "build": "bunchee",
     "dev": "bunchee --watch",
-    "prepare": "npm run build"
+    "prepare": "pnpm run build"
   },
   "keywords": [
     "next",
