@@ -73,4 +73,7 @@ That's it!
 
 ## License
 
-MIT.
+Released under the [MIT License](./LICENSE).  
+Originally developed by [Shu Ding](https://github.com/shuding).  
+Forked and maintained by [Konrad Guzek](https://github.com/kguzek) under the [@Solvro](https://github.com/Solvro) namespace.  
+© 2024 Shu Ding — © 2025 Konrad Guzek.
