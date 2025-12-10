@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, use } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { useHash } from './use-hash'
 
 // TODO: This implementation might not be complete when there are nested
@@ -8,6 +8,7 @@ import { useHash } from './use-hash'
 
 export function useBrowserNativeTransitions() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const currentPathname = useRef(pathname)
 
   // This is a global state to keep track of the view transition state.
@@ -75,5 +76,5 @@ export function useBrowserNativeTransitions() {
       transitionRef.current[1]()
       transitionRef.current = null
     }
-  }, [hash, pathname]);
+  }, [hash, pathname, searchParams]);
 }
