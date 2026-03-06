@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
           <footer>
             <p>
               Created by{' '}
-              <a href='https://twitter.com/shuding_' target='_blank'>
+              <a href='https://twitter.com/shuding' target='_blank'>
                 Shu Ding
               </a>
               . Source code on{' '}
