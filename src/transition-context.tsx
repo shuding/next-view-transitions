@@ -3,14 +3,20 @@ import { createContext, use, useEffect, useState } from 'react'
 
 import { useBrowserNativeTransitions } from './browser-native-events'
 
+export type ViewTransitionsOptions = {
+  scroll?: boolean
+}
+
 const ViewTransitionsContext = createContext<
   Dispatch<SetStateAction<(() => void) | null>>
 >(null)
 
 export function ViewTransitions({
   children,
+  options,
 }: Readonly<{
   children: React.ReactNode
+  options?: ViewTransitionsOptions
 }>) {
   const [finishViewTransition, setFinishViewTransition] = useState<
     null | (() => void)
@@ -23,7 +29,7 @@ export function ViewTransitions({
     }
   }, [finishViewTransition])
 
-  useBrowserNativeTransitions()
+  useBrowserNativeTransitions({ scroll: options?.scroll })
 
   return (
     <ViewTransitionsContext.Provider value={setFinishViewTransition}>
