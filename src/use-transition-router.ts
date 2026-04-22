@@ -34,9 +34,11 @@ export function useTransitionRouter() {
           })
       )
 
+        let promise = transition.ready;
         if (onTransitionReady) {
-          transition.ready.then(onTransitionReady);
+          promise = promise.then(onTransitionReady);
         }
+        promise.catch(() => {});
     }
      else {
         return cb()
