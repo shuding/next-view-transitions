@@ -38,7 +38,7 @@ export function useBrowserNativeTransitions() {
         document.startViewTransition(() => {
           resolve()
           return pendingViewTransition
-        })
+        }).catch(() => {})
       })
 
       setCurrentViewTransition([
