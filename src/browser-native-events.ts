@@ -34,11 +34,23 @@ export function useBrowserNativeTransitions() {
       })
 
       const pendingStartViewTransition = new Promise<void>((resolve) => {
-        // @ts-ignore
-        document.startViewTransition(() => {
+        // Resolve on abort so a skipped/aborted transition (Chrome throws or rejects with InvalidStateError, e.g. while a cross-document `@view-transition` is in flight) can't leave `use()` suspended forever on a blank route.
+        const unblock = () => {
+          pendingViewTransitionResolve()
           resolve()
-          return pendingViewTransition
-        })
+        }
+
+        try {
+          // @ts-ignore
+          const transition = document.startViewTransition(() => {
+            resolve()
+            return pendingViewTransition
+          })
+          transition.ready.catch(unblock)
+          transition.finished.catch(unblock)
+        } catch {
+          unblock()
+        }
       })
 
       setCurrentViewTransition([
